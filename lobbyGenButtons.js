@@ -54,7 +54,7 @@ rule "${button} mode detection":
     @Event eachPlayer
     @Condition gameState == GS_LOBBY
     @Condition not eventPlayer.isDummy()
-    @Condition eventPlayer.isHoldingButton(Button.INTERACT) or eventPlayer.isHoldingButton(Button.PRIMARY_FIRE)
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT) or eventPlayer.isHoldingButton(Button.PRIMARY_FIRE) or eventPlayer.isUsingAbility1()
     # Ensure button is in front of the player
     @Condition ${t} >= 0
     # Check that the closest point along ray is within the sphere
