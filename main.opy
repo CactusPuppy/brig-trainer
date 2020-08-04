@@ -18,6 +18,43 @@ globalvar buttonText
 #!define buttonRadius 1
 
 #!define lobbyButtons() __script__('lobbyGenButtons.js')
+#!define player getPlayersInSlot(0, Team.1)
+
+settings {
+    "lobby": {
+        "team1Slots": 1,
+        "team2Slots": 0
+    },
+    "gamemodes": {
+        "skirmish": {
+            "enabledMaps": [
+                "workshopChamber"
+            ]
+        }
+    },
+    "heroes": {
+        "team1": {
+            "brigitte": {
+                "ability1Cooldown%": 0
+            },
+            "enabledHeroes": [
+                "brigitte"
+            ]
+        },
+        "team2": {
+            "pharah": {
+                "enableSecondaryFireUnlimitedFuel": true,
+                "ability1Cooldown%": 0
+            },
+            "tracer": {
+                "ability1Cooldown%": 25
+            },
+            "mccree": {
+                "ability1Cooldown%": 0
+            }
+        }
+    }
+}
 
 rule "Global Setup":
     @Event global
