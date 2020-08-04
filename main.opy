@@ -76,6 +76,13 @@ rule "==== LOBBY ====":
 
 #!include "lobby.opy"
 
+rule "==== WHIP SHOT ====":
+    @Disabled
+    @Event global
+    gameState = false
+
+#!include "modeWhipShot.opy"
+
 rule "==== DEBUG ====":
     @Disabled
     @Event global
