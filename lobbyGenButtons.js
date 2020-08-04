@@ -12,8 +12,8 @@ let buttons = [
     },
 
 ]
-let buttonModes = ["GS_WHIP_SHOT", "GS_BASH_CANCEL", "GS_ESCAPE_BASH", "GS_COUNTER_CHARGE", "GS_MIXED"];
-let buttonNames = ["Whip Shot Practice", "Ult Cancel Practice", "Escape Bash Practice", "Counter Bash Practice", "Mixed Mode"]
+let buttonModes = ["GS_WHIP_SHOT", "GS_ULT_DENIAL", "GS_ESCAPE_BASH", "GS_COUNTER_CHARGE", "GS_MIXED"];
+let buttonNames = ["Whip Shot Practice", "Ult Denial Practice", "Escape Bash Practice", "Counter Bash Practice", "Mixed Mode"]
 let topY = 10;
 let leftZ = -2.5;
 let ySep = 5;

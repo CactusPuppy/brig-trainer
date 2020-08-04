@@ -11,7 +11,7 @@ globalvar buttonText
 
 #!define GS_LOBBY 0
 #!define GS_WHIP_SHOT 1
-#!define GS_BASH_CANCEL 2
+#!define GS_ULT_DENIAL 2
 #!define GS_ESCAPE_BASH 3
 #!define GS_COUNTER_CHARGE 4
 #!define GS_MIXED 5
@@ -84,6 +84,13 @@ rule "==== WHIP SHOT ====":
     gameState = false
 
 #!include "modeWhipShot.opy"
+
+rule "==== ULT DENIAL ====":
+    @Disabled
+    @Event global
+    gameState = false
+
+#!include "modeUltDenial.opy"
 
 rule "==== DEBUG ====":
     @Disabled
