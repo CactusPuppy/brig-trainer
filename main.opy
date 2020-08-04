@@ -61,6 +61,8 @@ rule "Global Setup":
     gameState = GS_LOBBY
     buttonLocations = []
     buttonText = []
+    #Debugging
+    disableInspector()
 
 rule "Player Setup":
     @Event eachPlayer
