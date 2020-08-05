@@ -13,7 +13,6 @@ rule "Whip Shot mode setup":
     player.setSecondaryFireEnabled(false)
     player.setAbility1Enabled(true)
     player.setAbility2Enabled(false)
-    player.setUltEnabled(false)
     createWhipShotBots()
 
 rule "Cleanup whip shot mode":
@@ -22,7 +21,6 @@ rule "Cleanup whip shot mode":
     player.setSecondaryFireEnabled(true)
     player.setAbility1Enabled(true)
     player.setAbility2Enabled(true)
-    player.setUltEnabled(true)
     destroyAllDummies()
 
 def createWhipShotBots():

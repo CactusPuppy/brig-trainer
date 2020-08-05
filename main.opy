@@ -25,7 +25,8 @@ settings {
     "lobby": {
         "allowPlayersInQueue": true,
         "team1Slots": 1,
-        "team2Slots": 0
+        "team2Slots": 0,
+        "swapTeamsAfterMatch": false
     },
     "gamemodes": {
         "skirmish": {
@@ -77,11 +78,16 @@ settings {
 
 rule "Global Setup":
     @Event global
+    #Debugging
+    if not createWorkshopSetting(bool, "Debug Mode", "Enabled", false):
+        disableInspector()
     gameState = GS_LOBBY
     buttonLocations = []
     buttonText = []
-    #Debugging
-    disableInspector()
+    #Stop timer
+    setMatchTime(817.5)
+    wait()
+    pauseMatchTime()
 
 rule "Player Setup":
     @Event eachPlayer
