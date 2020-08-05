@@ -49,6 +49,14 @@ rule "Instantly respawn dummy bots":
     wait()
     victim.respawn()
 
+rule "Recharge Whip Shot instantly":
+    @Event eachPlayer
+    @Team 1
+    @Hero brigitte
+    @Condition gameState == GS_WHIP_SHOT
+    @Condition eventPlayer.getAbilityCooldown(Button.ABILITY_1) > 0
+    eventPlayer.setAbilityCooldown(Button.ABILITY_1, 0)
+
 rule "If Real Player hits dummy bot, give feedback":
     @Event playerDealtDamage
     @Condition gameState == GS_WHIP_SHOT

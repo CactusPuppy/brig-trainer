@@ -11,7 +11,7 @@ globalvar buttonText
 
 #!define GS_LOBBY 0
 #!define GS_WHIP_SHOT 1
-#!define GS_ULT_DENIAL 2
+#!define GS_DIVE_DENIAL 2
 #!define GS_ESCAPE_BASH 3
 #!define GS_COUNTER_CHARGE 4
 #!define GS_MIXED 5
@@ -19,9 +19,11 @@ globalvar buttonText
 
 #!define lobbyButtons() __script__('lobbyGenButtons.js')
 #!define player getPlayersInSlot(0, Team.1)
+#!define diveModeCenter vect(-7,0,0)
 
 settings {
     "lobby": {
+        "allowPlayersInQueue": true,
         "team1Slots": 1,
         "team2Slots": 0
     },
@@ -30,12 +32,23 @@ settings {
             "enabledMaps": [
                 "workshopChamber"
             ]
+        },
+        "general": {
+            "enableHeroSwitching": false,
+            "heroLimit": "off",
+            "enableKillCam": false,
+            "enableKillFeed": false,
+            "enableRandomHeroes": true,
+            "respawnTime%": 0
         }
     },
     "heroes": {
         "team1": {
             "brigitte": {
-                "ability1Cooldown%": 0
+                "ability1Cooldown%": 50,
+                "secondaryFireRechargeRate%": 500,
+                "shieldBashCooldown%": 50,
+                "enableUlt": false
             },
             "enabledHeroes": [
                 "brigitte"
@@ -51,6 +64,12 @@ settings {
             },
             "mccree": {
                 "ability1Cooldown%": 0
+            },
+            "doomfist": {
+                "damageDealt%": 500
+            },
+            "winston": {
+                "damageDealt%": 450
             }
         }
     }
@@ -85,12 +104,12 @@ rule "==== WHIP SHOT ====":
 
 #!include "modeWhipShot.opy"
 
-rule "==== ULT DENIAL ====":
+rule "==== DIVE DENIAL ====":
     @Disabled
     @Event global
     gameState = false
 
-#!include "modeUltDenial.opy"
+#!include "modeDiveDenial.opy"
 
 rule "==== DEBUG ====":
     @Disabled
