@@ -4,15 +4,17 @@ globalvar enemySpawnPositions
 globalvar diveRingEffect
 globalvar currentDiveHero
 globalvar currentDiveBot
+globalvar diveInteractText
 
 subroutine resetDiveMode
 
 def resetDiveMode():
-    destroyAllDummies()
+    destroyDummy(Team.2, 0)
     modeActive = false
     currentDiveHero = null
     wait()
     hudHeader(getAllPlayers(), "Press interact ({0}) when ready".format(buttonString(Button.INTERACT)), HudPosition.TOP, 1, Color.GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+    diveInteractText = getLastCreatedText()
 
 rule "Dive denial mode setup":
     @Condition gameState == GS_DIVE_DENIAL
@@ -29,7 +31,7 @@ rule "Dive denial mode setup":
 
 rule "Dive denial mode cleanup":
     @Condition gameState != GS_DIVE_DENIAL
-    destroyAllHudTexts()
+    destroyHudText(diveInteractText)
     destroyEffect(diveRingEffect)
     player.setPrimaryFireEnabled(true)
     player.setSecondaryFireEnabled(true)
@@ -45,7 +47,7 @@ rule "Start/Stop Scenario":
 
     #Start scenario
     if modeActive == false:
-        destroyAllHudTexts()
+        destroyHudText(diveInteractText)
         eventPlayer.communicate(Comms.COUNTDOWN)
         bigMessage(getAllPlayers(), "Get Ready!")
         wait(0.3)
@@ -57,10 +59,11 @@ rule "Start/Stop Scenario":
         wait(1)
         smallMessage(getAllPlayers(), "Survive!")
         hudHeader(getAllPlayers(), "Press interact ({0}) to stop".format(buttonString(Button.INTERACT)), HudPosition.TOP, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
+        diveInteractText = getLastCreatedText()
         modeActive = true
     #Stop scenario
     else:
-        destroyAllHudTexts()
+        destroyHudText(diveInteractText)
         resetDiveMode()
         smallMessage(getAllPlayers(), "Halted Mode")
         #Prevent spam
@@ -89,8 +92,7 @@ rule "Force Player to remain within ring":
         goto RULE_START
 
 rule "Spawn enemy":
-    @Condition gameState == GS_DIVE_DENIAL
-    @Condition modeActive
+    isModeActive("GS_DIVE_DENIAL")
     @Condition currentDiveHero == null
     @Condition player.isAlive()
     player.setHealth(player.getMaxHealth())
@@ -117,7 +119,7 @@ rule "Winston behaviour":
     wait(2)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(2)
-    destroyAllDummies()
+    destroyDummy(Team.2, 0)
     currentDiveHero = null
 
 
@@ -146,7 +148,7 @@ rule "Genji behaviour":
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(3)
-    destroyAllDummies()
+    destroyDummy(Team.2, 0)
     currentDiveHero = null
 
 
@@ -167,7 +169,7 @@ rule "Doomfist behaviour":
     wait(1.3)
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     wait(1)
-    destroyAllDummies()
+    destroyDummy(Team.2, 0)
     currentDiveHero = null
 
 
@@ -189,7 +191,7 @@ rule "Sombra behaviour":
     wait(0.6)
     eventPlayer.forceButtonPress(Button.ULTIMATE)
     wait(1)
-    destroyAllDummies()
+    destroyDummy(Team.2, 0)
     currentDiveHero = null
 
 rule "Die on hack":

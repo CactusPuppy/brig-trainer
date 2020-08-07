@@ -11,4 +11,5 @@ rule "On holding crouch, reset to lobby":
     smallMessage(getAllPlayers(), "Returning to lobby in 1...")
     wait(1, Wait.ABORT_WHEN_FALSE)
     gameState = GS_LOBBY
+    modeActive = false
     smallMessage(getAllPlayers(), "Returned to Lobby")

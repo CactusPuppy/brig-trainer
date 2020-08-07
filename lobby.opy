@@ -12,3 +12,4 @@ rule "Lobby Cleanup":
     for i in range(0, len(buttonText)):
         destroyInWorldText(buttonText[i])
     buttonText = []
+    buttonLocations = []

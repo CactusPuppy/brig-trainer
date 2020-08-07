@@ -23,6 +23,7 @@ globalvar modeActive
 #!define lobbyButtons() __script__('lobbyGenButtons.js')
 #!define player getPlayersInSlot(0, Team.1)
 #!define diveModeCenter vect(-7,0,0)
+#!define isModeActive(mode) __script__('isModeActive.js')
 
 settings {
     "lobby": {
@@ -84,6 +85,7 @@ rule "Global Setup":
     #Debugging
     if not createWorkshopSetting(bool, "Debug Mode", "Enabled", false):
         disableInspector()
+    hudHeader(getAllPlayers() if gameState != GS_LOBBY else [], "Hold [{0}] to Return to Lobby".format(buttonString(Button.CROUCH)), HudPosition.LEFT, 1, Color.YELLOW, HudReeval.VISIBILITY_AND_STRING)
     gameState = GS_LOBBY
     buttonLocations = []
     buttonText = []
@@ -97,7 +99,7 @@ rule "Player Setup":
     @Condition not eventPlayer.isDummy()
     @Condition eventPlayer.hasSpawned()
     eventPlayer.teleport(vect(0,0,0))
-    eventPlayer.setFacing(vect(1,0.3,0), Relativity.TO_WORLD)
+    eventPlayer.setFacing(vect(-1,0.3,0), Relativity.TO_WORLD)
 
 rule "==== LOBBY ====":
     @Disabled

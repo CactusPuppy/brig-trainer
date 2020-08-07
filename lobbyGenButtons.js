@@ -1,41 +1,51 @@
 var result = `rule "Lobby Mode Setup":
     @Event global
-    @Condition gameState == GS_LOBBY`;
+    @Condition gameState == GS_LOBBY
+    player.setFacing(vect(-1,0.3,0), Relativity.TO_WORLD)`;
 let buttons = [
     {
-        "location": "vect(20, 10, -5)",
-        "mode": "GS_WHIP_SHOT"
+        "mode": "GS_WHIP_SHOT",
+        "name": "Whip Shot Practice"
     },
     {
-        "location": "vect(20, 10, 5)",
-        "mode": "GS_BASH_CANCEL"
+        "mode": "GS_DIVE_DENIAL",
+        "name": "Dive Denial Practice"
     },
-
+    {
+        "mode": "GS_ESCAPE_BASH",
+        "name": "Coming Soon!"
+    },
+    {
+        "mode": "GS_COUNTER_CHARGE",
+        "name": "Coming Soon!"
+    },
+    {
+        "mode": "GS_MIXED",
+        "name": "Coming Soon!"
+    }
 ]
-let buttonModes = ["GS_WHIP_SHOT", "GS_DIVE_DENIAL", "GS_ESCAPE_BASH", "GS_COUNTER_CHARGE", "GS_MIXED"];
-let buttonNames = ["Whip Shot Practice", "Dive Denial Practice", "Escape Bash Practice", "Counter Bash Practice", "Mixed Mode"]
 let topY = 10;
-let leftZ = -2.5;
+let leftZ = 2.5;
 let ySep = 5;
-let zSep = 5;
+let zSep = -5;
 let butPerRow = 2;
 let curY = topY;
 let curZ = leftZ;
 let curRowInd = 0;
-let x = 20;
+let x = -20;
 
-buttonModes.forEach(function (mode, i) {
-    if (i + 1 == buttonModes.length) {
+buttons.forEach(function (button) {
+    if (button.mode == "GS_MIXED") {
         curZ = 0;
         curY = 1;
     }
     let butLoc = `vect(${x}, ${curY}, ${curZ})`;
     result += `
-    #${mode} button
+    #${button.mode} button
     buttonLocations.append(${butLoc})
-    createEffect(getAllPlayers(), Effect.SPHERE, Color.BLUE, ${butLoc}, buttonRadius, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(getAllPlayers(), Effect.SPHERE, ${button.name == "Coming Soon!" ? 'Color.RED' : 'Color.BLUE'}, ${butLoc}, buttonRadius, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     buttonEffects.append(getLastCreatedEntity())
-    createInWorldText(getAllPlayers(), "${buttonNames[i]}", ${butLoc}, 1, Clip.NONE, WorldTextReeval.VISIBILITY, Color.WHITE, SpecVisibility.ALWAYS)
+    createInWorldText(getAllPlayers(), "${button.name}", ${butLoc}, 1, Clip.NONE, WorldTextReeval.VISIBILITY, Color.WHITE, SpecVisibility.ALWAYS)
     buttonText.append(getLastCreatedText())`;
     curRowInd++;
     curZ += zSep;
@@ -47,10 +57,13 @@ buttonModes.forEach(function (mode, i) {
 })
 
 let curModeInd = 0;
-buttonModes.forEach(function (button, i) {
+buttons.forEach(function (button) {
+    if (button.name == "Coming Soon!") {
+        return;
+    }
     let t = `dotProduct(buttonLocations[${curModeInd}] - eventPlayer.getEyePosition(), eventPlayer.getFacingDirection())`;
     result += `
-rule "${button} mode detection":
+rule "${button.name} mode detection":
     @Event eachPlayer
     @Condition gameState == GS_LOBBY
     @Condition not eventPlayer.isDummy()
@@ -61,8 +74,8 @@ rule "${button} mode detection":
     @Condition distance(eventPlayer.getEyePosition() + ${t} * eventPlayer.getFacingDirection(), buttonLocations[${curModeInd}]) <= buttonRadius
     # Check that the closest point along ray is within the player's line of sight
     @Condition isInLoS(eventPlayer.getEyePosition() + ${t} * eventPlayer.getFacingDirection(), buttonLocations[${curModeInd}], BarrierLos.PASS_THROUGH_BARRIERS)
-    gameState = ${button}
-    smallMessage(getAllPlayers(), "Loading ${buttonNames[i]}...")`
+    gameState = ${button.mode}
+    smallMessage(getAllPlayers(), "Loading ${button.name}...")`
     curModeInd++;
 })
 

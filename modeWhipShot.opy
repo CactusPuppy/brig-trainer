@@ -14,6 +14,7 @@ rule "Whip Shot mode setup":
     player.setAbility1Enabled(true)
     player.setAbility2Enabled(false)
     createWhipShotBots()
+    modeActive = true
 
 rule "Cleanup whip shot mode":
     @Condition gameState != GS_WHIP_SHOT
@@ -34,7 +35,7 @@ def createWhipShotBots():
 
 rule "Handle Bot Creation/Respawn":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.isAlive()
     eventPlayer.teleport(vect(10, 0.5, random.uniform(-8,8)))
@@ -42,7 +43,7 @@ rule "Handle Bot Creation/Respawn":
 
 rule "Instantly respawn dummy bots":
     @Event playerDied
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition victim.isDummy()
     wait()
     victim.respawn()
@@ -51,13 +52,13 @@ rule "Recharge Whip Shot instantly":
     @Event eachPlayer
     @Team 1
     @Hero brigitte
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.getAbilityCooldown(Button.ABILITY_1) > 0
     eventPlayer.setAbilityCooldown(Button.ABILITY_1, 0)
 
 rule "If Real Player hits dummy bot, give feedback":
     @Event playerDealtDamage
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition not attacker.isDummy()
     kill(victim, attacker)
     playEffect(getAllPlayers(), DynamicEffect.GOOD_EXPLOSION, Color.YELLOW, victim, 0.8)
@@ -65,7 +66,7 @@ rule "If Real Player hits dummy bot, give feedback":
     
 rule "move all bots":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     do:
         #Set back/forward movement
@@ -83,7 +84,7 @@ rule "move all bots":
 
 rule "hover for pharah bot":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.isAlive()
     @Condition eventPlayer.getCurrentHero() == Hero.PHARAH
@@ -98,7 +99,7 @@ rule "hover for pharah bot":
 
 rule "jump jet for pharah bot":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.isAlive()
     @Condition eventPlayer.getCurrentHero() == Hero.PHARAH
@@ -111,7 +112,7 @@ rule "jump jet for pharah bot":
 
 rule "tracer blinks :)":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.isAlive()
     @Condition eventPlayer.getCurrentHero() == Hero.TRACER
@@ -122,7 +123,7 @@ rule "tracer blinks :)":
 
 rule "mccree rolls":
     @Event eachPlayer
-    @Condition gameState == GS_WHIP_SHOT
+    isModeActive("GS_WHIP_SHOT")
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.isAlive()
     @Condition eventPlayer.getCurrentHero() == Hero.MCCREE
