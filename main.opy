@@ -9,6 +9,9 @@ globalvar buttonLocations
 globalvar buttonEffects
 globalvar buttonText
 
+# Universal vars
+globalvar modeActive
+
 #!define GS_LOBBY 0
 #!define GS_WHIP_SHOT 1
 #!define GS_DIVE_DENIAL 2

@@ -1,7 +1,6 @@
 #!mainFile "main.opy"
 
 globalvar enemySpawnPositions
-globalvar diveModeActive
 globalvar diveRingEffect
 globalvar currentDiveHero
 globalvar currentDiveBot
@@ -10,7 +9,7 @@ subroutine resetDiveMode
 
 def resetDiveMode():
     destroyAllDummies()
-    diveModeActive = false
+    modeActive = false
     currentDiveHero = null
     wait()
     hudHeader(getAllPlayers(), "Press interact ({0}) when ready".format(buttonString(Button.INTERACT)), HudPosition.TOP, 1, Color.GREEN, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
@@ -45,7 +44,7 @@ rule "Start/Stop Scenario":
     @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
 
     #Start scenario
-    if diveModeActive == false:
+    if modeActive == false:
         destroyAllHudTexts()
         eventPlayer.communicate(Comms.COUNTDOWN)
         bigMessage(getAllPlayers(), "Get Ready!")
@@ -58,7 +57,7 @@ rule "Start/Stop Scenario":
         wait(1)
         smallMessage(getAllPlayers(), "Survive!")
         hudHeader(getAllPlayers(), "Press interact ({0}) to stop".format(buttonString(Button.INTERACT)), HudPosition.TOP, 1, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.DEFAULT)
-        diveModeActive = true
+        modeActive = true
     #Stop scenario
     else:
         destroyAllHudTexts()
@@ -91,7 +90,7 @@ rule "Force Player to remain within ring":
 
 rule "Spawn enemy":
     @Condition gameState == GS_DIVE_DENIAL
-    @Condition diveModeActive
+    @Condition modeActive
     @Condition currentDiveHero == null
     @Condition player.isAlive()
     player.setHealth(player.getMaxHealth())
