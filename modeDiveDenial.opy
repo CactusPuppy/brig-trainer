@@ -9,7 +9,7 @@ globalvar diveInteractText
 subroutine resetDiveMode
 
 def resetDiveMode():
-    destroyDummy(Team.2, 0)
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
     modeActive = false
     currentDiveHero = null
     wait()
@@ -37,13 +37,13 @@ rule "Dive denial mode cleanup":
     player.setSecondaryFireEnabled(true)
     player.setAbility1Enabled(true)
     player.setAbility2Enabled(true)
-    destroyAllDummies()
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
 
 rule "Start/Stop Scenario":
     @Event eachPlayer
     @Hero brigitte
     @Condition gameState == GS_DIVE_DENIAL
-    @Condition eventPlayer.isHoldingButton(Button.INTERACT) == true
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT)
 
     #Start scenario
     if modeActive == false:
@@ -74,8 +74,8 @@ rule "Handle Player Respawn":
     @Event eachPlayer
     @Hero brigitte
     @Condition gameState == GS_DIVE_DENIAL
-    @Condition eventPlayer.hasSpawned() == true
-    @Condition eventPlayer.isAlive() == true
+    @Condition eventPlayer.hasSpawned()
+    @Condition eventPlayer.isAlive()
     eventPlayer.teleport(diveModeCenter)
     eventPlayer.setFacing(vect(1,0,0), Relativity.TO_WORLD)
 
@@ -83,8 +83,8 @@ rule "Force Player to remain within ring":
     @Event eachPlayer
     @Hero brigitte
     @Condition gameState == GS_DIVE_DENIAL
-    @Condition eventPlayer.hasSpawned() == true
-    @Condition eventPlayer.isAlive() == true
+    @Condition eventPlayer.hasSpawned()
+    @Condition eventPlayer.isAlive()
     @Condition distance(vect(diveModeCenter.x, eventPlayer.y, diveModeCenter.z), eventPlayer.getPosition()) >= 7.5
     wait(0.048, Wait.ABORT_WHEN_FALSE)
     eventPlayer.teleport(vect(diveModeCenter.x, eventPlayer.getPosition().y, diveModeCenter.z) + directionTowards(vect(diveModeCenter.x, eventPlayer.getPosition().y, diveModeCenter.z), eventPlayer.getPosition()) * 7.4)
@@ -108,7 +108,7 @@ rule "Spawn enemy":
 rule "Winston behaviour":
     @Event eachPlayer
     @Hero winston
-    @Condition gameState == GS_DIVE_DENIAL
+    isModeActive("GS_DIVE_DENIAL")
     @Condition eventPlayer.isDummy() == true
     @Condition eventPlayer.hasSpawned() == true
     
@@ -119,14 +119,14 @@ rule "Winston behaviour":
     wait(2)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(2)
-    destroyDummy(Team.2, 0)
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
     currentDiveHero = null
 
 
 rule "Genji behaviour":
     @Event eachPlayer
     @Hero genji
-    @Condition gameState == GS_DIVE_DENIAL
+    isModeActive("GS_DIVE_DENIAL")
     @Condition eventPlayer.isDummy() == true
     @Condition eventPlayer.hasSpawned() == true
     
@@ -148,14 +148,14 @@ rule "Genji behaviour":
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(3)
-    destroyDummy(Team.2, 0)
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
     currentDiveHero = null
 
 
 rule "Doomfist behaviour":
     @Event eachPlayer
     @Hero doomfist
-    @Condition gameState == GS_DIVE_DENIAL
+    isModeActive("GS_DIVE_DENIAL")
     @Condition eventPlayer.isDummy() == true
     @Condition eventPlayer.hasSpawned() == true
     
@@ -169,14 +169,14 @@ rule "Doomfist behaviour":
     wait(1.3)
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     wait(1)
-    destroyDummy(Team.2, 0)
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
     currentDiveHero = null
 
 
 rule "Sombra behaviour":
     @Event eachPlayer
     @Hero sombra
-    @Condition gameState == GS_DIVE_DENIAL
+    isModeActive("GS_DIVE_DENIAL")
     @Condition eventPlayer.isDummy() == true
     @Condition eventPlayer.hasSpawned() == true
     
@@ -191,13 +191,13 @@ rule "Sombra behaviour":
     wait(0.6)
     eventPlayer.forceButtonPress(Button.ULTIMATE)
     wait(1)
-    destroyDummy(Team.2, 0)
+    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
     currentDiveHero = null
 
 rule "Die on hack":
     @Event eachPlayer
     @Hero brigitte
-    @Condition gameState == GS_DIVE_DENIAL
+    isModeActive("GS_DIVE_DENIAL")
     @Condition eventPlayer.hasStatusEffect(Status.HACKED) == true
     
     kill(eventPlayer, currentDiveBot)

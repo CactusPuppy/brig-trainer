@@ -1,6 +1,7 @@
 var result = `rule "Lobby Mode Setup":
     @Event global
     @Condition gameState == GS_LOBBY
+    player.teleport(vect(0,0,0))
     player.setFacing(vect(-1,0.3,0), Relativity.TO_WORLD)`;
 let buttons = [
     {

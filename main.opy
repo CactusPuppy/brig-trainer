@@ -26,6 +26,9 @@ globalvar modeActive
 #!define isModeActive(mode) __script__('isModeActive.js')
 
 settings {
+    "main": {
+        "description": "=== BRIG TRAINING FACILITY v0.5 ===            By @Cactus_Puppy https://workshop.codes/R5HER                      Dive Denial mode adapted from Kevlar_OW's mode [392TH]"
+    },
     "lobby": {
         "allowPlayersInQueue": true,
         "team1Slots": 1,
@@ -44,7 +47,7 @@ settings {
             "enableKillCam": false,
             "enableKillFeed": false,
             "enableRandomHeroes": true,
-            "respawnTime%": 0
+            "respawnTime%": 10
         }
     },
     "heroes": {
