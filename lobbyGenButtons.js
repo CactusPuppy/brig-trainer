@@ -14,7 +14,7 @@ let buttons = [
     },
     {
         "mode": "GS_ESCAPE_BASH",
-        "name": "Coming Soon!"
+        "name": "Ultimate Escape"
     },
     {
         "mode": "GS_COUNTER_CHARGE",

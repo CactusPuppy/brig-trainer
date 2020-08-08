@@ -78,6 +78,9 @@ settings {
             },
             "winston": {
                 "damageDealt%": 450
+            },
+            "hammond": {
+                "damageDealt%": 200
             }
         }
     }
@@ -124,6 +127,13 @@ rule "==== DIVE DENIAL ====":
     gameState = false
 
 #!include "modeDiveDenial.opy"
+
+rule "==== ESCAPE BASH ====":
+    @Disabled
+    @Event global
+    gameState = false
+
+#!include "modeEscape.opy"
 
 rule "==== DEBUG ====":
     @Disabled
