@@ -18,7 +18,7 @@ let buttons = [
     },
     {
         "mode": "GS_COUNTER_CHARGE",
-        "name": "Coming Soon!"
+        "name": "Counter Charging"
     },
     {
         "mode": "GS_MIXED",
