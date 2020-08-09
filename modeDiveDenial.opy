@@ -119,7 +119,7 @@ rule "Winston behaviour":
     wait(2)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(2)
-    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentDiveHero = null
 
 
@@ -148,7 +148,7 @@ rule "Genji behaviour":
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
     wait(3)
-    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentDiveHero = null
 
 
@@ -169,7 +169,7 @@ rule "Doomfist behaviour":
     wait(1.3)
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     wait(1)
-    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentDiveHero = null
 
 
@@ -191,7 +191,7 @@ rule "Sombra behaviour":
     wait(0.6)
     eventPlayer.forceButtonPress(Button.ULTIMATE)
     wait(1)
-    destroyDummy(currentDiveBot.getTeam(), currentDiveBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentDiveHero = null
 
 rule "Die on hack":

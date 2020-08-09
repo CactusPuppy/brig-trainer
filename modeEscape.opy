@@ -113,14 +113,14 @@ rule "Sigma behavior":
     @Condition eventPlayer.isDummy()
     @Condition eventPlayer.hasSpawned()
 
-    currentEscapeBot.teleport(vect(0,10,0))
-    currentEscapeBot.startFacing(directionTowards(currentEscapeBot.getEyePosition(), player.getPosition() + 0.5 * player.getVelocity()), 9001, Relativity.TO_WORLD, FacingReeval.DIRECTION_AND_TURN_RATE)
+    eventPlayer.teleport(vect(0,10,0))
+    eventPlayer.startFacing(directionTowards(eventPlayer.getEyePosition(), player.getPosition() + 0.5 * player.getVelocity()), 9001, Relativity.TO_WORLD, FacingReeval.DIRECTION_AND_TURN_RATE)
     wait(0.1)
-    currentEscapeBot.forceButtonPress(Button.ULTIMATE)
+    eventPlayer.forceButtonPress(Button.ULTIMATE)
     wait(random.uniform(0.5,5))
     eventPlayer.forceButtonPress(Button.PRIMARY_FIRE)
     wait(2)
-    destroyDummy(currentEscapeBot.getTeam(), currentEscapeBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentEscapeHero = null
 
 rule "Mei behavior":
@@ -139,7 +139,7 @@ rule "Mei behavior":
     wait(5)
     if (currentEscapeHero != Hero.MEI):
         return
-    destroyDummy(currentEscapeBot.getTeam(), currentEscapeBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentEscapeHero = null
 
 rule "Wrecking Ball behavior":
@@ -161,5 +161,5 @@ rule "Wrecking Ball behavior":
     eventPlayer.stopForcingButton(Button.CROUCH)
     eventPlayer.stopThrottleInDirection()
     wait(3.5)
-    destroyDummy(currentEscapeBot.getTeam(), currentEscapeBot.getSlot())
+    destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentEscapeHero = null
