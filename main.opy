@@ -80,7 +80,7 @@ settings {
                 "damageDealt%": 450
             },
             "hammond": {
-                "damageDealt%": 200
+                "damageDealt%": 300
             }
         }
     }
