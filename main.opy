@@ -135,6 +135,13 @@ rule "==== ESCAPE BASH ====":
 
 #!include "modeEscape.opy"
 
+rule "==== COUNTER BASH ====":
+    @Disabled
+    @Event global
+    gameState = false
+
+#!include "modeCounterBash.opy"
+
 rule "==== DEBUG ====":
     @Disabled
     @Event global
