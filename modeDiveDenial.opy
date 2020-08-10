@@ -69,7 +69,6 @@ rule "Start/Stop Scenario":
         #Prevent spam
         wait(1)
 
-
 rule "Handle Player Respawn":
     @Event eachPlayer
     @Hero brigitte
@@ -78,6 +77,7 @@ rule "Handle Player Respawn":
     @Condition eventPlayer.isAlive()
     eventPlayer.teleport(diveModeCenter)
     eventPlayer.setFacing(vect(1,0,0), Relativity.TO_WORLD)
+    eventPlayer.setStatusEffect(null, Status.PHASED_OUT, 9999)
 
 rule "Force Player to remain within ring":
     @Event eachPlayer
@@ -95,6 +95,7 @@ rule "Spawn enemy":
     isModeActive("GS_DIVE_DENIAL")
     @Condition currentDiveHero == null
     @Condition player.isAlive()
+    player.clearStatusEffect(Status.PHASED_OUT)
     player.setHealth(player.getMaxHealth())
     player.setAbilityCooldown(Button.ABILITY_1, 0)
     player.setAbilityCooldown(Button.PRIMARY_FIRE, 0)
@@ -116,8 +117,11 @@ rule "Winston behaviour":
     eventPlayer.stopForcingPosition()
     eventPlayer.forceButtonPress(Button.ABILITY_1)
     eventPlayer.stopForcingThrottle()
-    wait(2)
+    wait(0.2)
+    eventPlayer.startThrottleInDirection(0.7 * eventPlayer.getFacingDirection() if angleDifference(eventPlayer.getHorizontalFacingAngle(), horizontalAngleFromDirection(eventPlayer.getVelocity())) <= 80 else eventPlayer.getFacingDirection(), 0.05, Relativity.TO_WORLD, Throttle.REPLACE_EXISTING, ThrottleReeval.DIRECTION_AND_MAGNITUDE)
     eventPlayer.startForcingButton(Button.PRIMARY_FIRE)
+    wait(1.4)
+    eventPlayer.startThrottleInDirection(directionTowards(eventPlayer.getPosition(), getPlayersInSlot(0, Team.1).getPosition()), 1, Relativity.TO_WORLD, Throttle.REPLACE_EXISTING, ThrottleReeval.DIRECTION_AND_MAGNITUDE)
     wait(2)
     destroyDummy(eventPlayer.getTeam(), eventPlayer.getSlot())
     currentDiveHero = null
@@ -164,7 +168,7 @@ rule "Doomfist behaviour":
     eventPlayer.forceButtonPress(Button.SECONDARY_FIRE)
     wait(0.1)
     eventPlayer.startForcingButton(Button.JUMP)
-    wait(1)
+    wait(0.8)
     eventPlayer.forceButtonPress(Button.ABILITY_2)
     wait(1.3)
     eventPlayer.forceButtonPress(Button.ABILITY_1)
